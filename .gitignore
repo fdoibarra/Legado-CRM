@@ -1,0 +1,32 @@
+# Archivos del Sistema Operativo Mac/Windows
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Carpetas de Dependencias (¡Muy importante si usas npm!)
+node_modules/
+
+# Archivos de configuración de Editores/IDEs comunes
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de Log y temporales
+*.log
+debug.log
+*.orig
+*.rej
+*.swo
+*.swp
+*~
+
+# Archivos sensibles de WordPress (¡NUNCA subir!)
+# (Aunque wp-config.php NO debería estar en tu tema/plugin, 
+# es una buena precaución añadirlo por si acaso)
+wp-config.php 
+
+# Archivos de Build/Compilados (si usaras herramientas como Sass/Webpack)
+# Puedes descomentar (quitar el #) si los usas
+# dist/
+# build/

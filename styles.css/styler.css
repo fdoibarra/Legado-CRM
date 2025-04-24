@@ -1,0 +1,82 @@
+/* Base styles using Tailwind's @apply for theme consistency */
+body {
+    @apply bg-bg-light text-text-primary dark:bg-dark-bg dark:text-dark-text-primary transition-colors duration-300;
+}
+
+/* Modal sizing */
+#leadModal > div, #taskListModal > div, #taskCompletionModal > div {
+    max-height: 90vh;
+    @apply flex flex-col;
+}
+
+/* Focus outline styles */
+*:focus-visible {
+    @apply outline-offset-2 outline-2 outline-accent dark:outline-dark-accent;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-dark-bg rounded;
+}
+::-webkit-scrollbar-thumb {
+    @apply bg-secondary dark:bg-dark-secondary rounded;
+}
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent dark:bg-dark-accent;
+}
+
+/* Theming helper classes */
+.card-bg {
+    @apply bg-white dark:bg-dark-bg-card;
+}
+.input-bg {
+    @apply bg-white dark:bg-gray-700;
+}
+.input-border {
+    @apply border border-gray-300 dark:border-dark-border;
+}
+.text-main {
+    @apply text-text-primary dark:text-dark-text-primary;
+}
+.text-sub {
+    @apply text-text-secondary dark:text-dark-text-secondary;
+}
+.section-border {
+    @apply border-gray-200 dark:border-dark-border;
+}
+.history-bg {
+    @apply bg-gray-50 dark:bg-gray-700;
+}
+
+/* Placeholder text color */
+textarea::placeholder {
+    @apply text-gray-400 dark:text-gray-500;
+}
+
+/* Styling for empty/invalid select dropdowns */
+select:invalid { color: gray; }
+option[value=""] { color: gray; }
+option { color: initial; } /* Reset option color */
+select.dark:invalid { color: theme('colors.dark.text-secondary'); }
+select.dark option[value=""] { color: theme('colors.dark.text-secondary');}
+select.dark option {
+    color: theme('colors.dark.text-primary');
+    background-color: theme('colors.dark.bg-card');
+}
+
+/* Styling for comment textarea with button inside */
+.textarea-container {
+    position: relative;
+}
+.textarea-button {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+}
+
+/* Note: Tailwind utility classes used directly in the HTML handle the rest of the styling. */
+/* The @apply directives here require the Tailwind script to be running. */
