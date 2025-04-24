@@ -4,27 +4,55 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CRM - LEGADO Terrenos en Baja</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-             darkMode: 'class',
-             theme: {
-                 extend: {
-                     colors: {
-                         primary: '#162D3F', secondary: '#D6BF8D', accent: '#AD9162',
-                         'bg-light': '#F9F7F3', 'text-primary': '#333333', 'text-secondary': '#666666',
-                         dark: {
-                             primary: '#2C3E50', secondary: '#EAE0C8', accent: '#F3DFC1',
-                             bg: '#1A202C', 'bg-card': '#2D3748',
-                             'text-primary': '#E2E8F0', 'text-secondary': '#A0AEC0', border: '#4A5568',
-                         }
-                     },
-                 },
-             },
-         };
+              darkMode: 'class',
+              theme: {
+                  extend: {
+                      colors: {
+                          primary: '#162D3F', secondary: '#D6BF8D', accent: '#AD9162',
+                          'bg-light': '#F9F7F3', 'text-primary': '#333333', 'text-secondary': '#666666',
+                          dark: {
+                              primary: '#2C3E50', secondary: '#EAE0C8', accent: '#F3DFC1',
+                              bg: '#1A202C', 'bg-card': '#2D3748',
+                              'text-primary': '#E2E8F0', 'text-secondary': '#A0AEC0', border: '#4A5568',
+                          }
+                      },
+                  },
+              },
+          };
     </script>
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="css/crm-styles.css"> 
+    <style>
+        body { @apply bg-bg-light text-text-primary dark:bg-dark-bg dark:text-dark-text-primary transition-colors duration-300; }
+        #leadModal > div, #taskListModal > div, #taskCompletionModal > div { max-height: 90vh; @apply flex flex-col; }
+        *:focus-visible { @apply outline-offset-2 outline-2 outline-accent dark:outline-dark-accent; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { @apply bg-gray-100 dark:bg-dark-bg rounded; }
+        ::-webkit-scrollbar-thumb { @apply bg-secondary dark:bg-dark-secondary rounded; }
+        ::-webkit-scrollbar-thumb:hover { @apply bg-accent dark:bg-dark-accent; }
+        .card-bg { @apply bg-white dark:bg-dark-bg-card; }
+        .input-bg { @apply bg-white dark:bg-gray-700; }
+        .input-border { @apply border border-gray-300 dark:border-dark-border; }
+        .text-main { @apply text-text-primary dark:text-dark-text-primary; }
+        .text-sub { @apply text-text-secondary dark:text-dark-text-secondary; }
+        .section-border { @apply border-gray-200 dark:border-dark-border; }
+        .history-bg { @apply bg-gray-50 dark:bg-gray-700; }
+        textarea::placeholder { @apply text-gray-400 dark:text-gray-500; }
+        select:invalid { color: gray; }
+        option[value=""] { color: gray; }
+        option { color: initial; }
+        select.dark:invalid { color: theme('colors.dark.text-secondary'); }
+        select.dark option[value=""] { color: theme('colors.dark.text-secondary');}
+        select.dark option { color: theme('colors.dark.text-primary'); background-color: theme('colors.dark.bg-card'); }
+        .textarea-container { position: relative; }
+        .textarea-button { position: absolute; bottom: 0.5rem; right: 0.5rem; }
+    </style>
 </head>
 <body class="font-sans flex flex-col h-screen">
     <nav class="bg-primary text-white px-6 py-4 flex items-center justify-between shadow-md flex-shrink-0 dark:bg-dark-primary">
@@ -52,29 +80,29 @@
             <div class="flex-grow overflow-y-auto p-6">
                 <div class="space-y-6">
                     <section id="main-info-section">
-                         <h3 class="text-lg font-semibold mb-4 text-main">Datos del Cliente</h3>
-                         <div class="space-y-4">
-                             <div><label for="mName" class="block text-sm font-medium text-sub mb-1">Nombre</label><input id="mName" type="text" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" /></div>
-                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                 <div><label for="mInterest" class="block text-sm font-medium text-sub mb-1">Interés</label><select id="mInterest" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" required></select></div>
-                                 <div><label for="mStatus" class="block text-sm font-medium text-sub mb-1">Estado</label><select id="mStatus" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent"></select></div>
-                             </div>
-                             <div class="text-center pt-2">
-                                 <label class="block text-sm font-medium text-sub mb-1">Calificación</label>
-                                 <div id="starRating" class="flex justify-center space-x-1 text-gray-300 dark:text-gray-600 mt-2"></div>
-                             </div>
-                             <div class="flex items-center space-x-2 pt-3 border-t section-border">
-                                 <label for="mPhone" class="w-16 text-sm font-medium text-sub flex-shrink-0">Teléfono</label>
-                                 <input id="mPhone" type="tel" placeholder="Ej: 52..." class="flex-grow input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" />
-                                 <button id="btnCallFromModal" class="p-2 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-700 focus:outline-none" title="Llamar"><i class="fas fa-phone"></i></button>
-                                 <button id="btnWhatsAppFromModal" class="p-2 rounded-full bg-green-100 dark:bg-green-800 text-green-600 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-700 focus:outline-none" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>
-                             </div>
-                            <div class="flex items-center space-x-2">
-                                 <label for="mEmail" class="w-16 text-sm font-medium text-sub flex-shrink-0">Email</label>
-                                 <input id="mEmail" type="email" placeholder="cliente@ejemplo.com" class="flex-grow input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" />
-                                 <button id="btnEmailFromModal" class="p-2 rounded-full bg-red-100 dark:bg-red-800 text-red-600 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-700 focus:outline-none" title="Enviar Email"><i class="fas fa-envelope"></i></button>
-                             </div>
-                         </div>
+                        <h3 class="text-lg font-semibold mb-4 text-main">Datos del Cliente</h3>
+                        <div class="space-y-4">
+                            <div><label for="mName" class="block text-sm font-medium text-sub mb-1">Nombre</label><input id="mName" type="text" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" /></div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div><label for="mInterest" class="block text-sm font-medium text-sub mb-1">Interés</label><select id="mInterest" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" required></select></div>
+                                <div><label for="mStatus" class="block text-sm font-medium text-sub mb-1">Estado</label><select id="mStatus" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent"></select></div>
+                            </div>
+                            <div class="text-center pt-2">
+                                <label class="block text-sm font-medium text-sub mb-1">Calificación</label>
+                                <div id="starRating" class="flex justify-center space-x-1 text-gray-300 dark:text-gray-600 mt-2"></div>
+                            </div>
+                            <div class="flex items-center space-x-2 pt-3 border-t section-border">
+                                <label for="mPhone" class="w-16 text-sm font-medium text-sub flex-shrink-0">Teléfono</label>
+                                <input id="mPhone" type="tel" placeholder="Ej: 52..." class="flex-grow input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" />
+                                <button id="btnCallFromModal" class="p-2 rounded-full bg-blue-100 dark:bg-blue-800 text-blue-600 dark:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-700 focus:outline-none" title="Llamar"><i class="fas fa-phone"></i></button>
+                                <button id="btnWhatsAppFromModal" class="p-2 rounded-full bg-green-100 dark:bg-green-800 text-green-600 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-700 focus:outline-none" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                            </div>
+                           <div class="flex items-center space-x-2">
+                                <label for="mEmail" class="w-16 text-sm font-medium text-sub flex-shrink-0">Email</label>
+                                <input id="mEmail" type="email" placeholder="cliente@ejemplo.com" class="flex-grow input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent" />
+                                <button id="btnEmailFromModal" class="p-2 rounded-full bg-red-100 dark:bg-red-800 text-red-600 dark:text-red-300 hover:bg-red-200 dark:hover:bg-red-700 focus:outline-none" title="Enviar Email"><i class="fas fa-envelope"></i></button>
+                            </div>
+                        </div>
                     </section>
                     <section id="comments-section">
                         <div class="flex justify-between items-center pt-4 border-t section-border cursor-pointer" id="comments-toggle"><h3 class="text-lg font-semibold text-main">Historial de Comentarios</h3><button class="text-sub hover:text-main p-1" aria-label="Mostrar/Ocultar Comentarios"><i id="comments-toggle-icon" class="fas fa-chevron-down"></i></button></div>
@@ -83,34 +111,34 @@
                             <label for="mComment" class="sr-only">Agregar Nuevo Comentario/Nota</label><div class="textarea-container"><textarea id="mComment" rows="3" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent placeholder-text-sub pr-12" placeholder="Escribe un comentario... (Enter para nueva línea)"></textarea><button id="btnAddComment" class="textarea-button p-1 text-secondary dark:text-dark-secondary hover:text-accent dark:hover:text-dark-accent focus:outline-none" title="Añadir Comentario"><i class="fas fa-paper-plane text-lg"></i></button></div>
                         </div>
                     </section>
-                    <section id="tasks-main-section">
-                         <div class="flex justify-between items-center pt-4 border-t section-border cursor-pointer" id="tasks-main-toggle">
-                             <h3 class="text-lg font-semibold text-main">Tareas</h3>
-                             <button class="text-sub hover:text-main p-1" aria-label="Mostrar/Ocultar Tareas"><i id="tasks-main-toggle-icon" class="fas fa-chevron-down"></i></button>
-                         </div>
-                         <div id="tasks-main-content" class="hidden mt-3 space-y-6">
-                             <div id="pending-tasks-subsection">
-                                 <h4 class="text-md font-medium text-sub mb-2">Pendientes</h4>
+                     <section id="tasks-main-section">
+                        <div class="flex justify-between items-center pt-4 border-t section-border cursor-pointer" id="tasks-main-toggle">
+                            <h3 class="text-lg font-semibold text-main">Tareas</h3>
+                            <button class="text-sub hover:text-main p-1" aria-label="Mostrar/Ocultar Tareas"><i id="tasks-main-toggle-icon" class="fas fa-chevron-down"></i></button>
+                        </div>
+                        <div id="tasks-main-content" class="hidden mt-3 space-y-6">
+                            <div id="pending-tasks-subsection">
+                                <h4 class="text-md font-medium text-sub mb-2">Pendientes</h4>
                                 <div class="border rounded-md p-3 max-h-48 overflow-y-auto history-bg section-border"><ul id="taskList" class="space-y-3"><li class="text-sub text-sm">No hay tareas pendientes.</li></ul></div>
-                             </div>
-                             <div id="add-task-subsection">
-                                 <div class="flex justify-between items-center mb-3 border-t section-border pt-4 cursor-pointer" id="add-task-toggle">
-                                     <h4 class="text-md font-medium text-sub">Programar Nueva Tarea</h4>
-                                     <button class="text-sub hover:text-main p-1" aria-label="Mostrar/Ocultar Formulario"><i id="add-task-toggle-icon" class="fas fa-chevron-down"></i></button>
-                                 </div>
-                                 <div id="add-task-form" class="hidden space-y-4">
-                                     <div><label for="tType" class="block text-xs font-medium text-sub mb-1">Tipo</label><select id="tType" class="w-full input-border input-bg text-main rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent text-sm"><option>Llamada</option><option>Mensaje</option><option>Reunión</option><option>Email</option><option>Otro</option></select></div>
-                                     <div class="grid grid-cols-2 gap-3"><div><label for="tDate" class="block text-xs font-medium text-sub mb-1">Fecha</label><input id="tDate" type="date" class="w-full input-border input-bg text-main rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent text-sm" /></div><div><label for="tTime" class="block text-xs font-medium text-sub mb-1">Hora</label><input id="tTime" type="time" class="w-full input-border input-bg text-main rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent text-sm" /></div></div>
-                                     <div><label for="tNotes" class="block text-xs font-medium text-sub mb-1">Notas / Comentarios para Tarea</label><textarea id="tNotes" rows="2" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent placeholder-text-sub text-sm" placeholder="Añade detalles o contexto aquí..."></textarea></div>
-                                     <div class="text-right"><button id="btnAddTask" class="bg-secondary hover:bg-accent text-white rounded py-1 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary dark:focus:ring-offset-dark-primary transition duration-200 text-sm inline-flex items-center justify-center"><i class="fas fa-plus mr-1"></i>Crear Tarea</button></div>
-                                 </div>
-                             </div>
+                            </div>
+                            <div id="add-task-subsection">
+                                <div class="flex justify-between items-center mb-3 border-t section-border pt-4 cursor-pointer" id="add-task-toggle">
+                                    <h4 class="text-md font-medium text-sub">Programar Nueva Tarea</h4>
+                                    <button class="text-sub hover:text-main p-1" aria-label="Mostrar/Ocultar Formulario"><i id="add-task-toggle-icon" class="fas fa-chevron-down"></i></button>
+                                </div>
+                                <div id="add-task-form" class="hidden space-y-4">
+                                    <div><label for="tType" class="block text-xs font-medium text-sub mb-1">Tipo</label><select id="tType" class="w-full input-border input-bg text-main rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent text-sm"><option>Llamada</option><option>Mensaje</option><option>Reunión</option><option>Email</option><option>Otro</option></select></div>
+                                    <div class="grid grid-cols-2 gap-3"><div><label for="tDate" class="block text-xs font-medium text-sub mb-1">Fecha</label><input id="tDate" type="date" class="w-full input-border input-bg text-main rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent text-sm" /></div><div><label for="tTime" class="block text-xs font-medium text-sub mb-1">Hora</label><input id="tTime" type="time" class="w-full input-border input-bg text-main rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent text-sm" /></div></div>
+                                    <div><label for="tNotes" class="block text-xs font-medium text-sub mb-1">Notas / Comentarios para Tarea</label><textarea id="tNotes" rows="2" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent placeholder-text-sub text-sm" placeholder="Añade detalles o contexto aquí..."></textarea></div>
+                                    <div class="text-right"><button id="btnAddTask" class="bg-secondary hover:bg-accent text-white rounded py-1 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary dark:focus:ring-offset-dark-primary transition duration-200 text-sm inline-flex items-center justify-center"><i class="fas fa-plus mr-1"></i>Crear Tarea</button></div>
+                                </div>
+                            </div>
                              <div id="task-history-subsection">
-                                 <h4 class="text-md font-medium text-sub mb-2 border-t section-border pt-4">Historial</h4>
-                                 <div class="border rounded-md p-3 max-h-48 overflow-y-auto history-bg section-border"><ul id="taskHistoryList" class="space-y-3"><li class="text-sub text-sm">No hay tareas completadas.</li></ul></div>
-                             </div>
-                         </div>
-                    </section>
+                                <h4 class="text-md font-medium text-sub mb-2 border-t section-border pt-4">Historial</h4>
+                                <div class="border rounded-md p-3 max-h-48 overflow-y-auto history-bg section-border"><ul id="taskHistoryList" class="space-y-3"><li class="text-sub text-sm">No hay tareas completadas.</li></ul></div>
+                            </div>
+                        </div>
+                     </section>
                 </div>
             </div>
             <footer class="flex-shrink-0 px-6 py-4 flex justify-end space-x-3 section-border border-t mt-6"><button id="btnCancel" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded transition duration-200 text-sub dark:text-dark-text-secondary">Cerrar</button></footer>
@@ -118,9 +146,8 @@
     </div>
 
     <div id="taskListModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-70 dark:bg-opacity-80 z-50 p-4 transition-opacity duration-300 opacity-0" aria-labelledby="taskListModalTitle" role="dialog" aria-modal="true"><div class="bg-white dark:bg-dark-bg-card rounded-lg shadow-xl w-full max-w-4xl transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]"><header class="flex-shrink-0 px-6 py-4 flex justify-between items-center section-border border-b"><h2 id="taskListModalTitle" class="text-xl font-semibold text-main">Lista de Tareas Pendientes</h2><button id="taskListModalClose" class="text-sub hover:text-main focus:outline-none" aria-label="Cerrar lista de tareas"><i class="fas fa-times text-xl"></i></button></header><div class="flex-grow overflow-y-auto p-6"><div id="calendar-view-content" class="min-h-[50vh]"></div></div></div></div>
+    <div id="taskCompletionModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-70 dark:bg-opacity-80 z-50 p-4 transition-opacity duration-300 opacity-0" aria-labelledby="taskCompletionModalTitle" role="dialog" aria-modal="true"><div class="bg-white dark:bg-dark-bg-card rounded-lg shadow-xl p-6 w-full max-w-lg overflow-y-auto transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]"><header class="flex-shrink-0 flex justify-between items-center mb-5 pb-3 section-border border-b"><h2 id="taskCompletionModalTitle" class="text-xl font-semibold text-main">Completar Tarea</h2><button id="taskCompletionModalClose" class="text-sub hover:text-main focus:outline-none" aria-label="Cerrar"><i class="fas fa-times text-xl"></i></button></header><div class="flex-grow overflow-y-auto py-4"><div class="space-y-4"><div><label class="block text-sm font-medium text-sub mb-2">¿La tarea se realizó con éxito?</label><div class="flex space-x-4"><label class="flex items-center"><input type="radio" name="taskSuccess" value="yes" class="focus:ring-primary dark:focus:ring-dark-accent h-4 w-4 text-primary dark:text-dark-accent border-gray-300 dark:border-dark-border dark:bg-gray-700" checked><span class="ml-2 text-sm text-main">Sí</span></label><label class="flex items-center"><input type="radio" name="taskSuccess" value="no" class="focus:ring-primary dark:focus:ring-dark-accent h-4 w-4 text-primary dark:text-dark-accent border-gray-300 dark:border-dark-border dark:bg-gray-700"><span class="ml-2 text-sm text-main">No</span></label></div></div><div><label for="taskOutcomeComment" class="block text-sm font-medium text-sub mb-1">Comentario (Obligatorio)</label><textarea id="taskOutcomeComment" rows="4" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent placeholder-text-sub" placeholder="Describe el resultado o por qué no se completó..." required></textarea></div></div></div><footer class="flex-shrink-0 flex justify-end space-x-3 mt-6 pt-4 section-border border-t"><button id="taskCompletionCancel" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded transition duration-200 text-sub dark:text-dark-text-secondary">Cancelar</button><button id="taskCompletionSave" class="px-5 py-2 bg-primary dark:bg-dark-accent text-white rounded hover:opacity-90 transition duration-200 flex items-center"><i class="fas fa-check mr-2"></i>Confirmar Completado</button></footer></div></div>
 
-     <div id="taskCompletionModal" class="fixed inset-0 hidden items-center justify-center bg-black bg-opacity-70 dark:bg-opacity-80 z-50 p-4 transition-opacity duration-300 opacity-0" aria-labelledby="taskCompletionModalTitle" role="dialog" aria-modal="true"><div class="bg-white dark:bg-dark-bg-card rounded-lg shadow-xl p-6 w-full max-w-lg overflow-y-auto transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]"><header class="flex-shrink-0 flex justify-between items-center mb-5 pb-3 section-border border-b"><h2 id="taskCompletionModalTitle" class="text-xl font-semibold text-main">Completar Tarea</h2><button id="taskCompletionModalClose" class="text-sub hover:text-main focus:outline-none" aria-label="Cerrar"><i class="fas fa-times text-xl"></i></button></header><div class="flex-grow overflow-y-auto py-4"><div class="space-y-4"><div><label class="block text-sm font-medium text-sub mb-2">¿La tarea se realizó con éxito?</label><div class="flex space-x-4"><label class="flex items-center"><input type="radio" name="taskSuccess" value="yes" class="focus:ring-primary dark:focus:ring-dark-accent h-4 w-4 text-primary dark:text-dark-accent border-gray-300 dark:border-dark-border dark:bg-gray-700" checked><span class="ml-2 text-sm text-main">Sí</span></label><label class="flex items-center"><input type="radio" name="taskSuccess" value="no" class="focus:ring-primary dark:focus:ring-dark-accent h-4 w-4 text-primary dark:text-dark-accent border-gray-300 dark:border-dark-border dark:bg-gray-700"><span class="ml-2 text-sm text-main">No</span></label></div></div><div><label for="taskOutcomeComment" class="block text-sm font-medium text-sub mb-1">Comentario (Obligatorio)</label><textarea id="taskOutcomeComment" rows="4" class="w-full input-border input-bg text-main p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary dark:focus:ring-dark-accent placeholder-text-sub" placeholder="Describe el resultado o por qué no se completó..." required></textarea></div></div></div><footer class="flex-shrink-0 flex justify-end space-x-3 mt-6 pt-4 section-border border-t"><button id="taskCompletionCancel" class="px-4 py-2 bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 rounded transition duration-200 text-sub dark:text-dark-text-secondary">Cancelar</button><button id="taskCompletionSave" class="px-5 py-2 bg-primary dark:bg-dark-accent text-white rounded hover:opacity-90 transition duration-200 flex items-center"><i class="fas fa-check mr-2"></i>Confirmar Completado</button></footer></div></div>
-
-    <script src="script.js" defer></script>
-</body>
+    <script src="js/crm-script.js"></script>
+    </body>
 </html>
